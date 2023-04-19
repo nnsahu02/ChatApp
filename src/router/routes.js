@@ -1,5 +1,4 @@
-const express = require("express");
-const router = express.Router();
+const express = require("express"), router = express.Router(); 
 
 const { signUp, login } = require("../controllers/userController");
 
@@ -7,13 +6,25 @@ const { accessChat } = require("../controllers/chatController");
 
 const { protect } = require("../middleware/auth");
 
-//-------------->USER<--------------//
-//SIGNUP
-router.post("/signup", signUp);
 
-//SIGNIN
-router.post("/login", login);
 
-router.post('/chat', protect, accessChat)
+
+
+//   < USSER ENDPOINTS >
+
+router.post("/signup", signUp);  //SIGNUP
+router.post("/login", login);  //SIGNIN
+
+
+//   <  CHAT ENDPOINTS  >
+
+router.post('/chat', protect, accessChat);   //Fetch chat by ID
+
+
+
+
+
+
+
 
 module.exports = router;
