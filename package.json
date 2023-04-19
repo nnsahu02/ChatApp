@@ -1,0 +1,27 @@
+{
+  "name": "chatapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nnsahu02/ChatApp.git"
+  },
+  "author": "Rahul, Jyoti",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nnsahu02/ChatApp/issues"
+  },
+  "homepage": "https://github.com/nnsahu02/ChatApp#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^7.0.4",
+    "nodemon": "^2.0.22",
+    "socket.io": "^4.6.1"
+  }
+}
