@@ -3,6 +3,27 @@ const jwt = require("jsonwebtoken");
 
 const userModel = require("../model/userModel");
 
+
+
+//AllUSer
+
+const allUsers = async (req, res) => {
+    const keyword = req.query.search
+        ? {
+            $or: [
+                { name: { $regex: req.query.search, $options: "i" } },
+                { email: { $regex: req.query.search, $options: "i" } },
+            ],
+        }
+        : {};
+
+    const users = await userModel.find(keyword).find({ _id: { $ne: req.user._id } });
+    res.send(users);
+};
+
+
+//SIGNUP
+
 const signUp = async (req, res) => {
     try {
         const bodyData = req.body;
@@ -14,8 +35,7 @@ const signUp = async (req, res) => {
         const userdata = await userModel.create(bodyData);
 
         return (
-            res.status(201),
-            send({
+            res.status(201).send({
                 status: true,
                 message: "User created successfully",
                 data: userdata,
@@ -34,9 +54,9 @@ const signUp = async (req, res) => {
 
 const login = async (req, res) => {
     try {
-        const { emailId, password } = req.body;
+        const { email, password } = req.body;
 
-        if (!emailId)
+        if (!email)
             return res.status(400).send({
                 status: false,
                 message: "email is required",
@@ -48,7 +68,7 @@ const login = async (req, res) => {
                 message: "password is required",
             });
 
-        const userData = await userModel.findOne({ emailId: emailId });
+        const userData = await userModel.findOne({ email: email });
         if (!userData)
             return res.status(404).send({
                 status: false,
@@ -64,7 +84,8 @@ const login = async (req, res) => {
         }
 
         const userId = userData._id;
-        const token = jwt.sign({ userId: userId.toString() }, "strongpassword", {
+        const token = jwt.sign({ id: userId.toString() }
+            , process.env.JWT_SECRET, {
             expiresIn: "24h",
         });
 
@@ -86,4 +107,4 @@ const login = async (req, res) => {
     }
 };
 
-module.exports = { signUp, login };
+module.exports = { signUp, login, allUsers };
